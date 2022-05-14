@@ -2,7 +2,6 @@ package pages;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.selector.ByText;
 import org.openqa.selenium.Keys;
 import web.DataWizard;
 
@@ -29,81 +28,134 @@ public class TravelOfTheDay {
     private SelenideElement monthValidityError = $x("//*[@id=\"root\"]/div/form/fieldset/div[2]/span/span[1]/span/span/span[contains(text(),'Неверно указан срок действия карты')]");
     private SelenideElement yearPastDateError = $x("//*[@id=\"root\"]/div/form/fieldset/div[2]/span/span[2]/span/span/span[contains(text(),'Истёк срок действия карты')]");
     private SelenideElement yearFutureDateError = $x("//*[@id=\"root\"]/div/form/fieldset/div[2]/span/span[2]/span/span/span[contains(text(),'Неверно указан срок действия карты')]");
+    private SelenideElement yearBlankError = $x("//*[@id=\"root\"]/div/form/fieldset/div[2]/span/span[2]/span/span/span[contains(text(),'Неверный формат')]");
+    private SelenideElement cvcBlankError = $x("//*[@id=\"root\"]/div/form/fieldset/div[3]/span/span[2]/span/span/span[contains(text(),'Неверный формат')]");
+    private SelenideElement ownerBlankError = $x("//*[@id=\"root\"]/div/form/fieldset/div[3]/span/span[1]/span/span/span[contains(text(),'Поле обязательно для заполнения')]");
 
+    //sucess pop-ups
+    private SelenideElement succesWithApprovedCard = $x("//*[@id=\"root\"]/div/div[2]/div[contains(text(),'Операция одобрена Банком.')]");
+
+    //*[@id="root"]/div/form/fieldset/div[3]/span/span[2]/span/span/span[3]
     ////span[@class='input-group__input-case']//span[contains(text(),'Месяц')]//input[@class='input__control']
 /// //*[@id="root"]/div/form/fieldset/div[2]/span/span[1]/span/span/span[3]
 //  //*[@id="root"]/div/form/fieldset/div[2]/span/span[1]/span/span/span[3][contains(text(),'Неверный формат')]
-    public void click() {
+
+    public void makeItStraightBuy(){
         toBuyButton.click();
-        toBuyWithCreditButton.click();
-        System.out.println("");
-    }
-    public void MakeItStraigntBuy(){
-        toBuyButton.click();
+
     }
 
-    public void MakeItCreditBuy(){
+    public void makeItCreditBuy(){
         toBuyWithCreditButton.click();
     }
 
-    private void ClearIt(SelenideElement entity) {
+    private void clearIt(SelenideElement entity) {
         entity.sendKeys(Keys.CONTROL+"a",Keys.BACK_SPACE );
     }
 
-    public void FillItCorrect(DataWizard.FellowOne user){
-    //    cardNumberField.click();
+    public void fillItCorrect(DataWizard.FellowOne user){
+      //  cardNumberField.click();
         cardNumberField.setValue(user.getCards().getApprovedCard());
-     //   cardMonthField.click();
+      //  cardMonthField.click();
        cardMonthField.setValue(user.getDates().getValidMonth());
-      ///  cardYearField.click();
+     //  cardYearField.click();
         cardYearField.setValue(user.getDates().getValidYear());
-      //  cardOwnerField.click();
+     //  cardOwnerField.click();
         cardOwnerField.setValue(user.getName().getValidName());
         cardCvcField.setValue(user.getCvc().getValidCvc());
     }
 
-    public void WrongCardNumber(DataWizard.FellowOne user){
-        ClearIt(cardNumberField);
-        cardNumberField.setValue(user.getCards().getWrongCard());
+    public void happyPathWithAprovedCard(){
         proceedButton.click();
-        cardFieldError.shouldBe(Condition.visible);
-        ClearIt(cardNumberField);
-        cardNumberField.setValue(user.getCards().getApprovedCard());
+        succesWithApprovedCard.shouldBe(Condition.visible);
     }
 
-    public void WrongMonthNumberWOZero(DataWizard.FellowOne user){
-        ClearIt(cardMonthField);
-        cardMonthField.setValue(user.getDates().getInvalidMonthWOZero());
-        proceedButton.click();
-        monthWrongFormatError.shouldBe(Condition.visible);
-        ClearIt(cardMonthField);
-        cardMonthField.setValue(user.getDates().getValidMonth());
+    public void happyPathWithDeclinedCard(DataWizard.FellowOne user){
+        patternForPageTests(cardNumberField, proceedButton, succesWithApprovedCard,user.getCards().getDeclinedCard(), user.getCards().getApprovedCard() );
     }
 
-    public void WrongMonth(DataWizard.FellowOne user){
-        ClearIt(cardMonthField);
-        cardMonthField.setValue(user.getDates().getInvalidMonth());
-        proceedButton.click();
-        monthValidityError.shouldBe(Condition.visible);
-        ClearIt(cardMonthField);
-        cardMonthField.setValue(user.getDates().getValidMonth());
+    /**
+     * Шаблон для проверки тестовых полей
+     * @param testingElement Поле, которое будет тестироваться
+     * @param buttonToClick  Кнопка, для отправки формы
+     * @param errorMessage  Ожидаемое сообщение об ошибке
+     * @param testValue     Значение, передаваевое в текстовое поле
+     * @param validValue    Значение, устанавливаемое после прохождения теста
+     */
+    private void patternForPageTests( SelenideElement testingElement,SelenideElement buttonToClick, SelenideElement errorMessage, String testValue, String validValue ){
+        clearIt(testingElement);
+        testingElement.setValue(testValue);
+        buttonToClick.click();
+        errorMessage.shouldBe(Condition.visible);
+        clearIt(testingElement);
+        testingElement.setValue(validValue);
     }
 
-    public void WrongYearPast(DataWizard.FellowOne user){
-        ClearIt(cardYearField);
-        cardYearField.setValue(user.getDates().getInvalidYearPast());
-        proceedButton.click();
-        yearPastDateError.shouldBe(Condition.visible);
-        ClearIt(cardYearField);
-        cardYearField.setValue(user.getDates().getValidMonth());
+
+    public void wrongCardNumber(DataWizard.FellowOne user){
+        patternForPageTests(cardNumberField, proceedButton, cardFieldError,user.getCards().getWrongCard(), user.getCards().getApprovedCard() );
+
     }
 
-    public void WrongYearFuture(DataWizard.FellowOne user){
-        ClearIt(cardYearField);
-        cardYearField.setValue(user.getDates().getInvalidYearFuture());
-        proceedButton.click();
-        yearFutureDateError.shouldBe(Condition.visible);
-        ClearIt(cardYearField);
-        cardYearField.setValue(user.getDates().getValidMonth());
+    public void wrongMonthNumberWOZero(DataWizard.FellowOne user){
+        patternForPageTests(cardMonthField, proceedButton, monthWrongFormatError,user.getDates().getInvalidMonthWOZero(), user.getDates().getValidMonth() );
+
     }
+
+    public void wrongMonth(DataWizard.FellowOne user){
+        patternForPageTests(cardMonthField, proceedButton, monthValidityError,user.getDates().getInvalidMonth(), user.getDates().getValidMonth() );
+
+    }
+
+    public void wrongYearPast(DataWizard.FellowOne user){
+        patternForPageTests(cardYearField, proceedButton, yearPastDateError,user.getDates().getInvalidYearPast(), user.getDates().getValidYear() );
+
+    }
+
+    public void wrongYearFuture(DataWizard.FellowOne user){
+        patternForPageTests(cardYearField, proceedButton, yearFutureDateError,user.getDates().getInvalidYearFuture(), user.getDates().getValidYear() );
+
+    }
+
+    public void wrongCvc(DataWizard.FellowOne user){
+        patternForPageTests(cardCvcField, proceedButton, cvcBlankError,user.getCvc().getInvalidCvc(), user.getCvc().getValidCvc() );
+
+    }
+//    public void wrongName(DataWizard.FellowOne user){
+//        patternForPageTests(cardOwnerField, proceedButton, yearFutureDateError,user.getDates().getInvalidYearFuture(), user.getDates().getValidYear() );
+//
+//        clearIt(cardOwnerField);
+//        cardOwnerField.setValue(user.getName().getInvalidName());
+//        proceedButton.click();
+//        yearFutureDateError.shouldBe(Condition.visible);
+//        clearIt(cardOwnerField);
+//        cardOwnerField.setValue(user.getName().getValidName());
+//    }
+
+    public void blankCardNumb(DataWizard.FellowOne user){
+        patternForPageTests(cardNumberField, proceedButton, cardFieldError,"", user.getCards().getApprovedCard() );
+
+    }
+
+    public void blankMonth(DataWizard.FellowOne user){
+        patternForPageTests(cardMonthField, proceedButton, monthWrongFormatError,"", user.getDates().getValidMonth() );
+
+    }
+
+    public void blankYear(DataWizard.FellowOne user){
+        patternForPageTests(cardYearField, proceedButton, yearBlankError,"", user.getDates().getValidYear() );
+
+    }
+
+    public void blankCvc(DataWizard.FellowOne user){
+        patternForPageTests(cardCvcField, proceedButton, cvcBlankError,"", user.getCvc().getValidCvc() );
+
+    }
+
+    public void blankOwner(DataWizard.FellowOne user){
+        patternForPageTests(cardOwnerField, proceedButton, ownerBlankError,"", user.getName().getValidName() );
+
+    }
+
+
 }

@@ -30,14 +30,14 @@ public class DataWizard {
             Cards cards = new Cards(
                     approvedCard,
                     declinedCard,
-                    ghostOne.regexify("[0-9]{4}").toString()
+                    ghostOne.regexify("[0-9]{12}").toString()
             );
             return cards;
         }
 
         public static Names GenerateNames(){
             Names names = new Names(
-                       GenerateValidName(),
+                    GenerateValidName(),
                     GenerateInValidNameRu(),
                     GenerateInvalidNameSmall(),
                     GenerateInvalidName());
@@ -74,11 +74,13 @@ public class DataWizard {
         }
 
         private static String GenerateInValidNameRu() {
+            //TODO:хз есть ли смысл
             return ghostTwo.name().firstName() + " " + ghostTwo.name().lastName();
         }
 
         private static String GenerateInvalidNameSmall() {
             // 2 симбола без пробела
+            //TODO:хз есть ли смысл
             return ghostOne.name().firstName().substring(0,2);
         }
 
@@ -94,24 +96,16 @@ public class DataWizard {
 
         public static String GenerateInvalidYearDatePast(int currYear, int gap) {
             return GenerateComplexDate(gap+currYear,currYear-2,-1,1);
-//            Random rand = new Random();
-//            int res = rand.nextInt((currYear+ gap)-currYear) - currYear;
-//            return Integer.toString(res);
         }
 
         public static String GenerateInvalidYearDateFuture(int currYear, int gap) {
             return GenerateComplexDate(gap+currYear+7,currYear+7,1,1);
-//            Random rand = new Random();
-//            int res = rand.nextInt((currYear+ gap)-currYear) - currYear;
-//            return Integer.toString(res);
         }
 
         public static String GenerateValidMonth() {
 
             return GenerateComplexDate(12,0,1,-1);
-//            Random rand = new Random();
-//            int res = rand.nextInt(12);
-//            return Integer.toString(res);
+
 
         }
 
@@ -127,6 +121,15 @@ public class DataWizard {
              return ghostOne.regexify("[1-9]{2}").toString();
         }
 
+        /**
+         * Шаблон для работы с генератором года и месяца. Генерирует корректный/некорректный год либо месяц
+         * Принимает на вход максимальный, минимальный предел генерирования, порядок и тип выходного значения
+         * @param max максимум случайного значения
+         * @param min минимум
+         * @param order порядок генерации - >=0  прямой ( промежуточный выход после рандомизатора>0) , <0  - обратный ( нужен для получения "старого" года)
+         * @param dateType режим выхода. >=0  - прямой выход ( для получения года ), <0 - выход с учетом величины  для получения  валидного месяца ( 08 )
+         * @return
+         */
         public static String GenerateComplexDate(int max, int min, int order,int dateType) {
             int res;
             Random rand = new Random();
