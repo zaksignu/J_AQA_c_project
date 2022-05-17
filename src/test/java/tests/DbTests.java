@@ -1,9 +1,8 @@
 package tests;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.*;
 import pages.TravelOfTheDay;
 import web.DataWizard;
 
@@ -15,7 +14,7 @@ public class DbTests {
 
     @BeforeAll
     public static void startUp() {
-
+        SelenideLogger.addListener("allure", new AllureSelenide());
         open("http://localhost:8080");
         travelPage.makeItStraightBuy();
         travelPage.fillItCorrect(ghost);
@@ -39,5 +38,10 @@ public class DbTests {
         String expected = "DECLINED";
         Assertions.assertEquals(expected,actual);
         //  System.out.println("");
+    }
+
+    @AfterAll
+    static void tearDownAll() {
+        SelenideLogger.removeListener("allure");
     }
 }

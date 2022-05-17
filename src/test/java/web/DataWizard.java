@@ -19,7 +19,7 @@ public class DataWizard {
     final static String approvedCard = "1111222233334444";
     final static String declinedCard = "5555666677778888";
     final static int shrtTime = 4;
-    final static int lngTime = 17;
+    final static int lngTime = 20;
 
 
     static Faker ghostOne = new Faker(new Locale("EN"));

@@ -1,6 +1,9 @@
 package tests;
 
 
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +18,7 @@ public class UiTests {
 
     @BeforeAll
     public static void startUp() {
-
+        SelenideLogger.addListener("allure", new AllureSelenide());
         open("http://localhost:8080");
 //        var travelPage = new TravelOfTheDay();
         travelPage.makeItStraightBuy();
@@ -23,20 +26,20 @@ public class UiTests {
 
      //   travelPage.click();
     }
-
-    @Test
-    @DisplayName("UI test:Happy path with APPROVED card")
-    public void happyPathWithApprovedCard(){
-        //var travelPage = new TravelOfTheDay();
-        travelPage.happyPathWithAprovedCard(ghost);
-    }
-
-    @Test
-    @DisplayName("UI test:Happy path with DECLINED card")
-    public void happyPathWithDeclinedCard(){
-        //var travelPage = new TravelOfTheDay();
-        travelPage.happyPathWithDeclinedCard(ghost);
-    }
+//
+//    @Test
+//    @DisplayName("UI test:Happy path with APPROVED card")
+//    public void happyPathWithApprovedCard(){
+//        //var travelPage = new TravelOfTheDay();
+//        travelPage.happyPathWithAprovedCard(ghost);
+//    }
+//
+//    @Test
+//    @DisplayName("UI test:Happy path with DECLINED card")
+//    public void happyPathWithDeclinedCard(){
+//        //var travelPage = new TravelOfTheDay();
+//        travelPage.happyPathWithDeclinedCard(ghost);
+//    }
 
     @Test
     @DisplayName("UI test:Non complete card number")
@@ -123,6 +126,11 @@ public class UiTests {
     public void shouldNotWorkWithBlankOwner(){
        // var travelPage = new TravelOfTheDay();
         travelPage.blankOwner(ghost);
+    }
+
+    @AfterAll
+    static void tearDownAll() {
+        SelenideLogger.removeListener("allure");
     }
 
 
