@@ -1,20 +1,26 @@
 package web;
 
 import com.github.javafaker.Faker;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.filter.log.LogDetail;
+import io.restassured.http.ContentType;
+import io.restassured.specification.RequestSpecification;
+import lombok.SneakyThrows;
 import lombok.Value;
 
+import java.sql.DriverManager;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Random;
+import java.util.*;
 
 public class DataWizard {
     private DataWizard() {
     }
     final static String approvedCard = "1111222233334444";
     final static String declinedCard = "5555666677778888";
+    final static int shrtTime = 4;
+    final static int lngTime = 17;
+
 
     static Faker ghostOne = new Faker(new Locale("EN"));
     static Faker ghostTwo = new Faker(new Locale("RU"));
@@ -26,11 +32,21 @@ public class DataWizard {
         private GenerateMe() {
         }
 
+        public static int GenerateShortTime(){
+            return shrtTime;
+        }
+
+        public static int GenerateLongTime(){
+            return lngTime;
+        }
+
         public static Cards GenerateCards(){
             Cards cards = new Cards(
                     approvedCard,
                     declinedCard,
-                    ghostOne.regexify("[0-9]{12}").toString()
+                    ghostOne.regexify("[0-9]{12}").toString(),
+                    ghostOne.regexify("[0-9]{16}").toString()
+
             );
             return cards;
         }
@@ -43,14 +59,15 @@ public class DataWizard {
                     GenerateInvalidName());
             return names;
         }
-
+        public static Calendar generateDate(){
+            return Calendar.getInstance();
+        }
         public static DatesForCard GenerateDates(){
             int gap  = 3;
             SimpleDateFormat formateYear = new SimpleDateFormat("yy");
             SimpleDateFormat formateMonth = new SimpleDateFormat("MM");
-            Calendar cal = Calendar.getInstance();
+            Calendar cal = generateDate();
             int currentYear = Integer.valueOf(formateYear.format(cal.getTime()));
-            int currentMonth = Integer.valueOf(formateMonth.format(cal.getTime()));
 
             DatesForCard date = new DatesForCard(
                     GenerateValidYearDate(currentYear, gap),
@@ -171,6 +188,67 @@ public class DataWizard {
 
     }
 
+    public static class DbRoutines {
+        private DbRoutines() {
+        }
+
+//        private static RequestSpecification requestSpec = new RequestSpecBuilder()
+//                .setBaseUri("http://localhost")
+//                .setPort(8080)
+//                .setAccept(ContentType.JSON)
+//                .setContentType(ContentType.JSON)
+//                .log(LogDetail.ALL)
+//                .build();
+
+        @SneakyThrows
+        public static String getPaymentStatus(Calendar cal) {
+            String paymentId;
+            TimeZone utcTimezone = TimeZone.getTimeZone("UTC");
+            SimpleDateFormat formateDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            formateDate.setTimeZone(utcTimezone);
+            String currentYear = formateDate.format(cal.getTime());
+
+            try (
+                    var conn = DriverManager.getConnection(
+                            "jdbc:mysql://localhost:3306/app",
+                            "app",
+                            "pass"
+                    );
+                    var paymentStatus = conn.createStatement();
+            ) {
+
+               // SELECT  payment_id from order_entity oe where created like '2022-05-14 15:10:0%';
+                //SELECT  status from payment_entity  where created like '2022-05-16 05:09:5%';
+//                try (var rs = paymentStatus.executeQuery(" SELECT  payment_id from order_entity oe where created like '" +currentYear.subSequence(0,18) + "%';")) {
+//                    if (rs.next()) {
+//                        paymentId= rs.getString(1);
+//                        try (var rss = paymentStatus.executeQuery("SELECT  status from payment_entity where transaction_id='" +paymentId + "';")) {
+//                            //  SELECT  status from payment_entity where transaction_id ='45b3a1d9-0c28-4add-9914-70e9ceaeebd5';
+//                            if (rss.next()) {
+//                                return rss.getString(1);
+//                            }
+//                        }
+//                    }
+//                }
+                try (var rs = paymentStatus.executeQuery(" SELECT  status from payment_entity  where created like '" +currentYear.subSequence(0,17) + "%' order by created desc;")) {
+                    if (rs.next()) {
+
+                        return rs.getString(1);
+//                        try (var rss = paymentStatus.executeQuery("SELECT  status from payment_entity where transaction_id='" +paymentId + "';")) {
+//                            //  SELECT  status from payment_entity where transaction_id ='45b3a1d9-0c28-4add-9914-70e9ceaeebd5';
+//                            if (rss.next()) {
+//                                return rss.getString(1);
+//                            }
+//                        }
+                    }
+                }
+
+
+            }
+            return "";
+        }
+    }
+
     public static class UserManipulating {
         private UserManipulating() {
         }
@@ -178,9 +256,11 @@ public class DataWizard {
         public static FellowOne generateUser() {
             FellowOne user = new FellowOne(
                        GenerateMe.GenerateCards(),
-                    GenerateMe.GenerateNames(),
-                    GenerateMe.GenerateDates(),
-                    GenerateMe.GenerateCvc());
+                       GenerateMe.GenerateNames(),
+                       GenerateMe.GenerateDates(),
+                       GenerateMe.GenerateCvc(),
+                       GenerateMe.GenerateShortTime(),
+                       GenerateMe.GenerateLongTime());
             return user;
         }
 
@@ -195,6 +275,9 @@ public class DataWizard {
         private Names name;
         private DatesForCard dates;
         private Cvc cvc;
+        private int shortTime;
+        private int longTime;
+
 //        private String bearToken;
 //        private String cardOne;
     }
@@ -204,7 +287,8 @@ public class DataWizard {
     public static class Cards {
         private String approvedCard;
         private String declinedCard;
-        private String wrongCard;
+        private String wrongShortCard;
+        private String wrongLongCard;
     }
 
     @Value

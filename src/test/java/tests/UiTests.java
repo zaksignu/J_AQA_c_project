@@ -28,7 +28,7 @@ public class UiTests {
     @DisplayName("UI test:Happy path with APPROVED card")
     public void happyPathWithApprovedCard(){
         //var travelPage = new TravelOfTheDay();
-        travelPage.happyPathWithAprovedCard();
+        travelPage.happyPathWithAprovedCard(ghost);
     }
 
     @Test
@@ -40,9 +40,16 @@ public class UiTests {
 
     @Test
     @DisplayName("UI test:Non complete card number")
-    public void shouldNotWorkWithWrongCardNumber(){
+    public void shouldNotWorkWithWrongShortCardNumber(){
         //var travelPage = new TravelOfTheDay();
-        travelPage.wrongCardNumber(ghost);
+        travelPage.wrongShortCardNumber(ghost);
+    }
+
+    @Test
+    @DisplayName("UI test:Full random card number (neither approved, nor declined)")
+    public void shouldNotWorkWithWrongLongCardNumber(){
+        //var travelPage = new TravelOfTheDay();
+        travelPage.wrongLongCardNumber(ghost);
     }
 
     @Test
