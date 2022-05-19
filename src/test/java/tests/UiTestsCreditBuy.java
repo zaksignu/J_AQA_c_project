@@ -1,9 +1,8 @@
 package tests;
 
-
-import com.codeborne.selenide.logevents.SelenideLogger;
-import io.qameta.allure.selenide.AllureSelenide;
-import org.junit.jupiter.api.AfterAll;
+//import com.codeborne.selenide.logevents.SelenideLogger;
+//import io.qameta.allure.selenide.AllureSelenide;
+//import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,126 +11,109 @@ import web.DataWizard;
 
 import static com.codeborne.selenide.Selenide.open;
 
-public class UiTests {
+public class UiTestsCreditBuy {
+
     static DataWizard.FellowOne ghost = DataWizard.UserManipulating.generateUser();
     static TravelOfTheDay travelPage = new TravelOfTheDay();
 
     @BeforeAll
     public static void startUp() {
-        SelenideLogger.addListener("allure", new AllureSelenide());
+//        SelenideLogger.addListener("allure", new AllureSelenide());
         open("http://localhost:8080");
-//        var travelPage = new TravelOfTheDay();
-        travelPage.makeItStraightBuy();
+        travelPage.makeItCreditBuy();
         travelPage.fillItCorrect(ghost);
-
-     //   travelPage.click();
     }
-//
+
 //    @Test
-//    @DisplayName("UI test:Happy path with APPROVED card")
+//    @DisplayName("UI credit test:Happy path with APPROVED card")
 //    public void happyPathWithApprovedCard(){
-//        //var travelPage = new TravelOfTheDay();
 //        travelPage.happyPathWithAprovedCard(ghost);
 //    }
 //
 //    @Test
-//    @DisplayName("UI test:Happy path with DECLINED card")
+//    @DisplayName("UI credit test:Happy path with DECLINED card")
 //    public void happyPathWithDeclinedCard(){
-//        //var travelPage = new TravelOfTheDay();
 //        travelPage.happyPathWithDeclinedCard(ghost);
 //    }
 
     @Test
-    @DisplayName("UI test:Non complete card number")
+    @DisplayName("UI credit test:Non complete card number")
     public void shouldNotWorkWithWrongShortCardNumber(){
-        //var travelPage = new TravelOfTheDay();
         travelPage.wrongShortCardNumber(ghost);
     }
 
     @Test
-    @DisplayName("UI test:Full random card number (neither approved, nor declined)")
+    @DisplayName("UI credit test:Full random card number (neither approved, nor declined)")
     public void shouldNotWorkWithWrongLongCardNumber(){
-        //var travelPage = new TravelOfTheDay();
         travelPage.wrongLongCardNumber(ghost);
     }
 
     @Test
-    @DisplayName("UI test:Wrong month ( without 0)")
+    @DisplayName("UI credit test:Wrong month ( without 0)")
     public void shouldNotWorkWithWrongMonthWOZero(){
-       // var travelPage = new TravelOfTheDay();
         travelPage.wrongMonthNumberWOZero(ghost);
     }
 
     @Test
-    @DisplayName("UI test:Wrong month ( >12)")
+    @DisplayName("UI credit test:Wrong month ( >12)")
     public void shouldNotWorkWithWrongMonth(){
-      //  var travelPage = new TravelOfTheDay();
         travelPage.wrongMonth(ghost);
     }
 
     @Test
-    @DisplayName("UI test:Wrong year ( < current)")
+    @DisplayName("UI credit test:Wrong year ( < current)")
     public void shouldNotWorkWithWrongYearPast(){
-      //  var travelPage = new TravelOfTheDay();
         travelPage.wrongYearPast(ghost);
     }
 
 
     @Test
-    @DisplayName("UI test:Wrong year ( >current)")
+    @DisplayName("UI credit test:Wrong year ( >current)")
     public void shouldNotWorkWithWrongYearFuture(){
-     //   var travelPage = new TravelOfTheDay();
         travelPage.wrongYearFuture(ghost);
     }
 
     @Test
-    @DisplayName("UI test:short CVC")
+    @DisplayName("UI credit test:short CVC")
     public void shouldNotWorkWithShortCvc(){
-     //   var travelPage = new TravelOfTheDay();
         travelPage.wrongCvc(ghost);
     }
 
 
 
     @Test
-    @DisplayName("UI test:Blank card numb")
+    @DisplayName("UI credit test:Blank card numb")
     public void shouldNotWorkWithBlankCard(){
-      //  var travelPage = new TravelOfTheDay();
         travelPage.blankCardNumb(ghost);
     }
 
     @Test
-    @DisplayName("UI test:Blank month")
+    @DisplayName("UI credit test:Blank month")
     public void shouldNotWorkWithBlankMonth(){
-      //  var travelPage = new TravelOfTheDay();
         travelPage.blankMonth(ghost);
     }
 
     @Test
-    @DisplayName("UI test:Blank year")
+    @DisplayName("UI credit test:Blank year")
     public void shouldNotWorkWithBlankYear(){
-      //  var travelPage = new TravelOfTheDay();
         travelPage.blankYear(ghost);
     }
 
     @Test
-    @DisplayName("UI test:Blank CVC")
+    @DisplayName("UI credit test:Blank CVC")
     public void shouldNotWorkWithBlankCvc(){
-      //  var travelPage = new TravelOfTheDay();
         travelPage.blankCvc(ghost);
     }
 
     @Test
-    @DisplayName("UI test:Blank owner")
+    @DisplayName("UI credit test:Blank owner")
     public void shouldNotWorkWithBlankOwner(){
-       // var travelPage = new TravelOfTheDay();
         travelPage.blankOwner(ghost);
     }
 
-    @AfterAll
-    static void tearDownAll() {
-        SelenideLogger.removeListener("allure");
-    }
-
+//    @AfterAll
+//    static void tearDownAll() {
+//        SelenideLogger.removeListener("allure");
+//    }
 
 }

@@ -5,10 +5,8 @@ import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.Keys;
 import web.DataWizard;
 
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Calendar;
-import java.util.TimeZone;
 
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
@@ -17,7 +15,8 @@ import static com.codeborne.selenide.Selenide.$x;
 public class TravelOfTheDay {
     //buttons
     private SelenideElement toBuyButton = $(byText("Купить"));
-    private SelenideElement toBuyWithCreditButton = $(byText("Купить в кредит"));
+   // private SelenideElement toBuyWithCreditButton = $(byText("Купить в кредит"));
+    private SelenideElement toBuyWithCreditButton = $x("//*[@id=\"root\"]/div/button[2]");
     private SelenideElement proceedButton = $x("//*[@id=\"root\"]/div/form/fieldset/div[4]/button");
 
 
@@ -39,14 +38,11 @@ public class TravelOfTheDay {
     private SelenideElement ownerBlankError = $x("//*[@id=\"root\"]/div/form/fieldset/div[3]/span/span[1]/span/span/span[contains(text(),'Поле обязательно для заполнения')]");
     private SelenideElement cardReject = $x("//*[@id=\"root\"]/div/div[3]/div[contains(text(),'Ошибка! Банк отказал в проведении операции.')]");
 
-    //sucess pop-ups
+    //suсcess pop-ups
     private SelenideElement succesWithApprovedCard = $x("//*[@id=\"root\"]/div/div[2]/div[contains(text(),'Операция одобрена Банком.')]");
     private SelenideElement closeSuccessPopUp = $x("//*[@id=\"root\"]/div/div[2]/button");
     private SelenideElement closeDeniedPopUp = $x("//*[@id=\"root\"]/div/div[3]/button");
-    //*[@id="root"]/div/form/fieldset/div[3]/span/span[2]/span/span/span[3]
-    ////span[@class='input-group__input-case']//span[contains(text(),'Месяц')]//input[@class='input__control']
-/// //*[@id="root"]/div/form/fieldset/div[2]/span/span[1]/span/span/span[3]
-//  //*[@id="root"]/div/form/fieldset/div[2]/span/span[1]/span/span/span[3][contains(text(),'Неверный формат')]
+
 
     public void makeItStraightBuy(){
         toBuyButton.click();
@@ -72,51 +68,43 @@ public class TravelOfTheDay {
         cardCvcField.setValue(user.getCvc().getValidCvc());
     }
 
-    public void happyPathWithAprovedCard(DataWizard.FellowOne user){
-        patternForPageTests(cardNumberField, proceedButton, succesWithApprovedCard,user.getCards().getApprovedCard(), user.getCards().getApprovedCard(), user.getLongTime() );
-//        proceedButton.click();
-//        succesWithApprovedCard.shouldBe(Condition.visible);
-    }
+//    public void happyPathWithAprovedCard(DataWizard.FellowOne user){
+//        patternForPageTests(cardNumberField, proceedButton, succesWithApprovedCard,user.getCards().getApprovedCard(), user.getCards().getApprovedCard(), user.getLongTime() );
+//
+//    }
 
-    public String happyPathWithApprovedCardAndDb(DataWizard.FellowOne user){
+    public String happyPathWithApprovedCardAndDbStraight(DataWizard.FellowOne user){
        Calendar cal = patternForPageTests(cardNumberField, proceedButton, succesWithApprovedCard,user.getCards().getApprovedCard(), user.getCards().getApprovedCard(), user.getLongTime() );
-
-      // // Calendar cal = DataWizard.GenerateMe.generateDate();
-      //  proceedButton.click();
-     //   succesWithApprovedCard.shouldBe(Condition.visible, Duration.ofSeconds(15));
-        //patternForPageTests(cardNumberField, proceedButton, succesWithApprovedCard,user.getCards().getApprovedCard(), user.getCards().getApprovedCard() );
-       String act = DataWizard.DbRoutines.getPaymentStatus(cal);
-//        System.out.println(cal.getTime());
-////formateYear.setTimeZone(tm_utc);
-//        String currentYear = formateYear.format(cal.getTime());
-//        System.out.println(cal.getTime());
+       String act = DataWizard.DbRoutines.getPaymentStatusForStraightBuy(cal);
         return act;
     }
 
-    public String happyPathWithDeclinedCardAndDb(DataWizard.FellowOne user){
+    public String happyPathWithApprovedCardAndDbCredit(DataWizard.FellowOne user){
+        Calendar cal = patternForPageTests(cardNumberField, proceedButton, succesWithApprovedCard,user.getCards().getApprovedCard(), user.getCards().getApprovedCard(), user.getLongTime() );
+        String act = DataWizard.DbRoutines.getPaymentStatusForCreditBuy(cal);
+        return act;
+    }
+
+    public String happyPathWithDeclinedCardAndDbCredit(DataWizard.FellowOne user){
         Calendar cal = patternForPageTests(cardNumberField, proceedButton, succesWithApprovedCard,user.getCards().getDeclinedCard(), user.getCards().getDeclinedCard(), user.getLongTime() );
-
-//        Calendar cal = DataWizard.GenerateMe.generateDate();
-//        clearIt(cardNumberField);
-//        cardNumberField.setValue(user.getCards().getDeclinedCard());
-//        proceedButton.click();
-//        succesWithApprovedCard.shouldBe(Condition.visible, Duration.ofSeconds(15));
-        //patternForPageTests(cardNumberField, proceedButton, succesWithApprovedCard,user.getCards().getApprovedCard(), user.getCards().getApprovedCard() );
-        String act = DataWizard.DbRoutines.getPaymentStatus(cal);
-//        System.out.println(cal.getTime());
-////formateYear.setTimeZone(tm_utc);
-//        String currentYear = formateYear.format(cal.getTime());
-//        System.out.println(cal.getTime());
+        String act = DataWizard.DbRoutines.getPaymentStatusForCreditBuy(cal);
         return act;
     }
 
 
-    public void happyPathWithDeclinedCard(DataWizard.FellowOne user){
-        patternForPageTests(cardNumberField, proceedButton, succesWithApprovedCard,user.getCards().getDeclinedCard(), user.getCards().getApprovedCard(), user.getLongTime());
+    public String happyPathWithDeclinedCardAndDbStraight(DataWizard.FellowOne user){
+        Calendar cal = patternForPageTests(cardNumberField, proceedButton, succesWithApprovedCard,user.getCards().getDeclinedCard(), user.getCards().getDeclinedCard(), user.getLongTime() );
+        String act = DataWizard.DbRoutines.getPaymentStatusForStraightBuy(cal);
+        return act;
     }
+
+
+//    public void happyPathWithDeclinedCard(DataWizard.FellowOne user){
+//        patternForPageTests(cardNumberField, proceedButton, succesWithApprovedCard,user.getCards().getDeclinedCard(), user.getCards().getApprovedCard(), user.getLongTime());
+//    }
 
     /**
-     * Шаблон для проверки тестовых полей
+     * Шаблон для проверки тестовых полей. Возвращает момент нажатия кнопки отправки формы в формате Calendar.
      * @param testingElement Поле, которое будет тестироваться
      * @param buttonToClick  Кнопка, для отправки формы
      * @param errorMessage  Ожидаемое сообщение об ошибке
@@ -130,10 +118,10 @@ public class TravelOfTheDay {
         Calendar cal = DataWizard.GenerateMe.generateDate();
         buttonToClick.click();
         errorMessage.shouldBe(Condition.visible, Duration.ofSeconds(time));
-        if (errorMessage==succesWithApprovedCard) {
+        if (errorMessage == succesWithApprovedCard) {
             closeSuccessPopUp.click();
         }
-        if (errorMessage==cardReject) {
+        if (errorMessage == cardReject) {
             closeDeniedPopUp.click();
         }
         clearIt(testingElement);
@@ -176,16 +164,6 @@ public class TravelOfTheDay {
         patternForPageTests(cardCvcField, proceedButton, cvcBlankError,user.getCvc().getInvalidCvc(), user.getCvc().getValidCvc(), user.getShortTime() );
 
     }
-//    public void wrongName(DataWizard.FellowOne user){
-//        patternForPageTests(cardOwnerField, proceedButton, yearFutureDateError,user.getDates().getInvalidYearFuture(), user.getDates().getValidYear() );
-//
-//        clearIt(cardOwnerField);
-//        cardOwnerField.setValue(user.getName().getInvalidName());
-//        proceedButton.click();
-//        yearFutureDateError.shouldBe(Condition.visible);
-//        clearIt(cardOwnerField);
-//        cardOwnerField.setValue(user.getName().getValidName());
-//    }
 
     public void blankCardNumb(DataWizard.FellowOne user){
         patternForPageTests(cardNumberField, proceedButton, cardFieldError,"", user.getCards().getApprovedCard(), user.getShortTime() );
