@@ -43,7 +43,6 @@ public class ApiTests {
         Assertions.assertEquals(expected, actual);
     }
 
-
     @Test
     @DisplayName("Response with random card for straight payment ")
     public void randomCardWithStraightPayment() {
