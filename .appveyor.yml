@@ -1,0 +1,23 @@
+image: Ubuntu  # образ для сборки
+
+stack: jdk 11  # версия JDK
+
+branches:
+  only:
+    - master  # ветка git
+
+build: off  # будем использовать свой скрипт сборки
+
+install:
+  # запускаем SUT (& означает, что в фоновом режиме - не блокируем терминал для запуска тестов)
+  #- java -jar aqa-shop.jar &
+  - sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  - sudo chmod +x /usr/local/bin/docker-compose
+  - sudo docker-compose up -d
+  - sleep 10
+  #- java -Dspring.datasource.url=jdbc:mysql://localhost:3306/app -jar aqa-shop.jar &
+  - java  -jar aqa-shop.jar &
+  - sleep 10
+build_script:
+  - chmod +x gradlew
+  - ./gradlew test --info -Dselenide.headless=true  # запускаем тест, флаг --info позволяет выводить больше информации
