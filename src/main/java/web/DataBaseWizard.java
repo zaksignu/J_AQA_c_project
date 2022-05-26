@@ -18,6 +18,7 @@ public class DataBaseWizard {
     public static String getPaymentStatusForStraightBuy(Calendar cal, String status) {
         return DataBaseWizard.paymentStatusFromService(cal, "payment_entity", status);
     }
+
     @SneakyThrows
     public static String getPriceOfTourWithStraight(Calendar cal, String status) {
         return DataBaseWizard.paymentValue(cal, "payment_entity", status);
@@ -25,7 +26,7 @@ public class DataBaseWizard {
 
 
     @SneakyThrows
-    public static String paymentValue(Calendar cal, String dbPage, String status){
+    public static String paymentValue(Calendar cal, String dbPage, String status) {
         String date = DataWizard.GenerateMe.generateDateForDbQuerry(cal);  //
         try (
                 var conn = DriverManager.getConnection(
@@ -35,8 +36,8 @@ public class DataBaseWizard {
                 );
                 var paymentStatus = conn.createStatement();
         ) {
-            String p = " SELECT  amount from " + dbPage + "  where created like '" + date + "%' and status like '"+ status +"' order by created desc;";
-            try (var rs = paymentStatus.executeQuery(" SELECT  amount from " + dbPage + " where created like '" + date + "%' and status like '"+ status +"' order by created desc;")) {
+            String p = " SELECT  amount from " + dbPage + "  where created like '" + date + "%' and status like '" + status + "' order by created desc;";
+            try (var rs = paymentStatus.executeQuery(" SELECT  amount from " + dbPage + " where created like '" + date + "%' and status like '" + status + "' order by created desc;")) {
                 if (rs.next()) {
                     return rs.getString(1);
                 }
@@ -45,12 +46,6 @@ public class DataBaseWizard {
         return "OOPS! Look like we have nothing for your querry. Try again, it can stuck.";
 
     }
-
-
-
-
-
-
 
     /**
      * Шаблон для выполнения запроса к БД. Из экземпляра cal получаем текущую дату в формате "ГГГГ-ММ-ДД ЧЧ:ММ:С%",
@@ -71,8 +66,8 @@ public class DataBaseWizard {
                 );
                 var paymentStatus = conn.createStatement();
         ) {
-            String p = " SELECT  status from " + dbPage + "  where created like '" + date + "%' and status like '"+ status +"' order by created desc;";
-            try (var rs = paymentStatus.executeQuery(" SELECT  status from " + dbPage + " where created like '" + date + "%' and status like '"+ status +"' order by created desc;")) {
+            String p = " SELECT  status from " + dbPage + "  where created like '" + date + "%' and status like '" + status + "' order by created desc;";
+            try (var rs = paymentStatus.executeQuery(" SELECT  status from " + dbPage + " where created like '" + date + "%' and status like '" + status + "' order by created desc;")) {
                 if (rs.next()) {
                     return rs.getString(1);
                 }

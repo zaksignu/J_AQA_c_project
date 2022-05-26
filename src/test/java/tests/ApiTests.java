@@ -12,8 +12,6 @@ public class ApiTests {
     static FellowOneEntity.FellowOne ghost = DataWizard.UserManipulating.generateUser();
     static FellowOneEntity.ApiPaths aPath = new FellowOneEntity.ApiPaths();
 
-    //TODO: Make Summary.md
-    //TODO:
     @Test
     @DisplayName("Response with approved card for straight payment ")
     public void approvedCardWithStraightPAyment() {

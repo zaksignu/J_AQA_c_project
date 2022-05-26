@@ -50,7 +50,7 @@ public class Patterns {
         Calendar cal = DataWizard.GenerateMe.generateDate();
         buttonToClick.click();
         errorMessage.shouldBe(Condition.visible, Duration.ofSeconds(time));
-        if (errorMessage.equals( page.succesWithApprovedCard)) {
+        if (errorMessage.equals(page.succesWithApprovedCard)) {
             page.closeSuccessPopUp.click();
         }
         if (errorMessage.equals(page.cardReject)) {

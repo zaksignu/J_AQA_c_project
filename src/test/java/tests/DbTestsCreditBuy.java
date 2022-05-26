@@ -16,28 +16,13 @@ public class DbTestsCreditBuy {
     static FellowOneEntity.FellowOne ghost = DataWizard.UserManipulating.generateUser();
     static CreditBuy dbCredit;
 
-
-
-
-
-
-
-
-
     @BeforeAll
     public static void startUp() {
-   //     SelenideLogger.addListener("allure", new AllureSelenide());
         open("http://localhost:8080");
         var index = new IndexPage();
         dbCredit = index.letMeBuyViaCredit();
         Patterns.fillItCorrect(ghost, dbCredit);
     }
-
-//
-//    @AfterAll
-//    public static void tearDown() {
-//        SelenideLogger.removeListener("allure");
-//    }
 
     @Test
     @DisplayName("DB credit test:Happy path with APPROVED card and DB inspection")

@@ -98,18 +98,14 @@ public class DataWizard {
         }
 
         private static String GenerateInValidNameRu() {
-            //TODO:хз есть ли смысл
             return ghostTwo.name().firstName() + " " + ghostTwo.name().lastName();
         }
 
         private static String GenerateInvalidNameSmall() {
-            // 2 симбола без пробела
-            //TODO:хз есть ли смысл
             return ghostOne.name().firstName().substring(0, 2);
         }
 
         private static String GenerateInvalidName() {
-            //TODO:хз есть ли смысл
             return ghostOne.name().firstName() + ghostOne.name().firstName() + ghostOne.name().firstName() + ghostOne.name().firstName() + " " + ghostOne.name().lastName() + ghostOne.name().lastName() + ghostOne.name().lastName() + ghostOne.name().lastName();
         }
 
