@@ -20,12 +20,17 @@ public class UiTestsStraightBuy {
 
     @BeforeAll
     public static void startUp() {
+//        SelenideLogger.addListener("allure", new AllureSelenide());
         open("http://localhost:8080");
         var index = new IndexPage();
         uiStraight = index.letMeBuyStraight();
         Patterns.fillItCorrect(ghost, uiStraight);
     }
 
+//    @AfterAll
+//    public static void tearDown() {
+//        SelenideLogger.removeListener("allure");
+//    }
     @Test
     @DisplayName("UI straight test:Non complete card number")
     public void shouldNotWorkWithWrongShortCardNumber() {

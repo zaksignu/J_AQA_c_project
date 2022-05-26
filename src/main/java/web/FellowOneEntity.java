@@ -63,4 +63,11 @@ public class FellowOneEntity {
         final public String straightPath = "/payment";
         final public String creditPath = "/credit";
     }
+
+    @Value
+    public static class Status {
+        final public String approved = "APPROVED";
+        final public String declined = "DECLINED";
+    }
+
 }

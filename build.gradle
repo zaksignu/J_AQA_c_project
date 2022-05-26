@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'io.freefair.lombok' version '5.3.0'
- //   id 'io.qameta.allure' version '2.9.3'
+//    id 'io.qameta.allure' version '2.9.3'
 }
 
 group 'ru.netology'
@@ -10,12 +10,27 @@ version '1.0-SNAPSHOT'
 sourceCompatibility = 11
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
+//
+//reporting {
+//    baseDir = "$buildDir/report_s"
+//}
 
 //allure {
 //    version = '2.16.1'
+//    report {
+//        // There might be several tasks producing the report, so the property
+//        // configures a base directory for all the reports
+//        // Each task creates its own subfolder there
+//        reportDir.set(project.reporting.baseDirectory.dir("allure-report"))
+//        dependsOnTests.set(false)
+//    }
 //    useJUnit5 {
 //        version = '2.16.1'
 //    }
+//}
+
+//allure {
+//    value.set("2.8.0")
 //}
 
 repositories {
@@ -29,6 +44,9 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+  // testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+
     implementation 'io.rest-assured:rest-assured:4.3.0'
 
 
@@ -44,13 +62,25 @@ dependencies {
 
   //  testImplementation 'org.slf4j:slf4j-log4j12:1.7.36'
 
-    testImplementation "org.slf4j:slf4j-api:1.7.23"
-    testImplementation "org.slf4j:slf4j-log4j12:1.7.23"
+    implementation "org.slf4j:slf4j-api:1.7.23"
+    implementation "org.slf4j:slf4j-log4j12:1.7.23"
+ //   testRuntimeOnly("org.slf4j:slf4j-simple:1.7.36")
 
     testImplementation 'commons-dbutils:commons-dbutils:1.7'
 
-  //  testImplementation 'io.qameta.allure:allure-selenide:2.16.1'
+//    testRuntimeOnly 'io.qameta.allure:allure-junit5:2.14.0'
+//    testImplementation 'io.qameta.allure:allure-selenide:2.16.1'
    // testImplementation 'ru.yandex.qatools.allure:allure-report:1.3.9'
+
+
+  //  implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+ //   implementation("io.qameta.allure:allure-okhttp3:2.18.1")
+  //  testImplementation("com.codeborne:selenide:6.5.0")
+
+    //testImplementation("io.qameta.allure:allure-selenide:2.18.1")
+   // testImplementation("io.undertow:undertow-core:2.2.17.Final")
+  //  testRuntimeOnly("io.qameta.allure:allure-junit5:2.18.1")
+
 
 }
 

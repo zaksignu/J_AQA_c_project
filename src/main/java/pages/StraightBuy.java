@@ -7,19 +7,26 @@ import web.Patterns;
 import java.util.Calendar;
 
 public class StraightBuy extends GenericPage {
-
+    public static FellowOneEntity.Status status = new FellowOneEntity.Status();
     public StraightBuy() {
+    }
+
+
+    public String lookingForPriceWithApprovedCard(FellowOneEntity.FellowOne user) {
+        Calendar cal = Patterns. patternForPageTests(cardNumberField, proceedButton, succesWithApprovedCard, user.getCards().getApprovedCard(), user.getCards().getApprovedCard(), user.getLongTime(), new CreditBuy());
+        String act = DataBaseWizard.getPriceOfTourWithStraight(cal, status.getApproved());
+        return act;
     }
 
     public String happyPathWithApprovedCardAndDbStraight(FellowOneEntity.FellowOne user) {
         Calendar cal = Patterns.patternForPageTests(cardNumberField, proceedButton, succesWithApprovedCard, user.getCards().getApprovedCard(), user.getCards().getApprovedCard(), user.getLongTime(), new CreditBuy());
-        String act = DataBaseWizard.getPaymentStatusForStraightBuy(cal);
+        String act = DataBaseWizard.getPaymentStatusForStraightBuy(cal,status.getApproved());
         return act;
     }
 
     public String happyPathWithDeclinedCardAndDbStraight(FellowOneEntity.FellowOne user) {
         Calendar cal = Patterns.patternForPageTests(cardNumberField, proceedButton, succesWithApprovedCard, user.getCards().getDeclinedCard(), user.getCards().getDeclinedCard(), user.getLongTime(), new CreditBuy());
-        String act = DataBaseWizard.getPaymentStatusForStraightBuy(cal);
+        String act = DataBaseWizard.getPaymentStatusForStraightBuy(cal,status.getDeclined());
         return act;
     }
 

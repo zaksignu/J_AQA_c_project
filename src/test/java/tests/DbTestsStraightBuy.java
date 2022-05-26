@@ -21,11 +21,18 @@ public class DbTestsStraightBuy {
 
     @BeforeAll
     public static void startUp() {
+//        SelenideLogger.addListener("allure", new AllureSelenide());
         open("http://localhost:8080");
         var index = new IndexPage();
         dbStraight = index.letMeBuyStraight();
         Patterns.fillItCorrect(ghost, dbStraight);
     }
+
+
+//     @AfterAll
+//    public static void tearDown() {
+//        SelenideLogger.removeListener("allure");
+//    }
 
     @Test
     @DisplayName("DB straight test:Happy path with APPROVED card and DB inspection")
@@ -41,6 +48,14 @@ public class DbTestsStraightBuy {
         String actual = dbStraight.happyPathWithDeclinedCardAndDbStraight(ghost);
         String expected = "DECLINED";
         Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("DB straight:Price inspection for happyPath")
+    public void priceForTourCheck(){
+        String actual = dbStraight.lookingForPriceWithApprovedCard(ghost);
+        String expected = "4500000";
+        Assertions.assertEquals(expected,actual);
     }
 
 }

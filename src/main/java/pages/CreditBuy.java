@@ -7,18 +7,19 @@ import web.Patterns;
 import java.util.Calendar;
 
 public class CreditBuy extends GenericPage {
+    public static FellowOneEntity.Status status = new FellowOneEntity.Status();
     public CreditBuy() {
     }
 
     public String happyPathWithApprovedCardAndDbCredit(FellowOneEntity.FellowOne user) {
         Calendar cal = Patterns.patternForPageTests(cardNumberField, proceedButton, succesWithApprovedCard, user.getCards().getApprovedCard(), user.getCards().getApprovedCard(), user.getLongTime(), new CreditBuy());
-        String act = DataBaseWizard.getPaymentStatusForCreditBuy(cal);
+        String act = DataBaseWizard.getPaymentStatusForCreditBuy(cal,status.getApproved());
         return act;
     }
 
     public String happyPathWithDeclinedCardAndDbCredit(FellowOneEntity.FellowOne user) {
         Calendar cal = Patterns.patternForPageTests(cardNumberField, proceedButton, succesWithApprovedCard, user.getCards().getDeclinedCard(), user.getCards().getDeclinedCard(), user.getLongTime(), new CreditBuy());
-        String act = DataBaseWizard.getPaymentStatusForCreditBuy(cal);
+        String act = DataBaseWizard.getPaymentStatusForCreditBuy(cal, status.getDeclined());
         return act;
     }
 

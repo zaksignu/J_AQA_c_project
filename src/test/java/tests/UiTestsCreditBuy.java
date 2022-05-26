@@ -24,6 +24,7 @@ public class UiTestsCreditBuy {
     @BeforeAll
     public static void startUp() {
 //        SelenideLogger.addListener("allure", new AllureSelenide());
+//        SelenideLogger.addListener("allure", new AllureSelenide());
         open("http://localhost:8080");
         var index = new IndexPage();
         uiCredit = index.letMeBuyViaCredit();
@@ -32,6 +33,10 @@ public class UiTestsCreditBuy {
      //   travelPage.fillItCorrect(ghost);
     }
 
+//    @AfterAll
+//    public static void tearDown() {
+//        SelenideLogger.removeListener("allure");
+//    }
 //    @Test
 //    @DisplayName("UI credit test:Happy path with APPROVED card")
 //    public void happyPathWithApprovedCard(){
