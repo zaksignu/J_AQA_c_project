@@ -1,14 +1,15 @@
 package tests;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import pages.IndexPage;
 import pages.StraightBuy;
 import web.DataWizard;
 import web.FellowOneEntity;
 import web.Patterns;
 
-import static com.codeborne.selenide.Selenide.closeWindow;
 import static com.codeborne.selenide.Selenide.open;
 
 public class DbTestsStraightBuy {
@@ -17,18 +18,12 @@ public class DbTestsStraightBuy {
 
     @BeforeAll
     public static void startUp() {
-      //  WebDriverManager.chromedriver().driverVersion("85").setup();
-       // WebDriverManager.isOnline("http://localhost:8080");
         open("http://localhost:8080");
-        WebDriverManager.chromedriver().driverVersion("85").setup();
         var index = new IndexPage();
         dbStraight = index.letMeBuyStraight();
         Patterns.fillItCorrect(ghost, dbStraight);
     }
-    @AfterAll
-    public static void killIt(){
-        closeWindow();
-    }
+
     @Test
     @DisplayName("DB straight test:Happy path with APPROVED card and DB inspection")
     public void happyPathWithApprovedCard() {

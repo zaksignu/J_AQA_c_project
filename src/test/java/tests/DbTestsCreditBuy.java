@@ -1,13 +1,15 @@
 package tests;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import pages.CreditBuy;
 import pages.IndexPage;
 import web.DataWizard;
 import web.FellowOneEntity;
 import web.Patterns;
 
-import static com.codeborne.selenide.Selenide.closeWindow;
 import static com.codeborne.selenide.Selenide.open;
 
 public class DbTestsCreditBuy {
@@ -20,11 +22,6 @@ public class DbTestsCreditBuy {
         var index = new IndexPage();
         dbCredit = index.letMeBuyViaCredit();
         Patterns.fillItCorrect(ghost, dbCredit);
-    }
-
-    @AfterAll
-    public static void killIt(){
-        closeWindow();
     }
 
     @Test
