@@ -17,8 +17,10 @@ public class DbTestsStraightBuy {
 
     @BeforeAll
     public static void startUp() {
-        WebDriverManager.chromedriver().driverVersion("85").setup();
+      //  WebDriverManager.chromedriver().driverVersion("85").setup();
+       // WebDriverManager.isOnline("http://localhost:8080");
         open("http://localhost:8080");
+        WebDriverManager.chromedriver().driverVersion("85").setup();
         var index = new IndexPage();
         dbStraight = index.letMeBuyStraight();
         Patterns.fillItCorrect(ghost, dbStraight);
