@@ -18,7 +18,6 @@ public class UiTestsCreditBuy {
 
     @BeforeAll
     public static void startUp() {
-
         open("http://localhost:8080");
         var index = new IndexPage();
         uiCredit = index.letMeBuyViaCredit();
