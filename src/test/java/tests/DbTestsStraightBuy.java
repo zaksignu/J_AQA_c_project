@@ -1,5 +1,6 @@
 package tests;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import pages.IndexPage;
 import pages.StraightBuy;
@@ -16,6 +17,7 @@ public class DbTestsStraightBuy {
 
     @BeforeAll
     public static void startUp() {
+        WebDriverManager.chromedriver().driverVersion("85").setup();
         open("http://localhost:8080");
         var index = new IndexPage();
         dbStraight = index.letMeBuyStraight();

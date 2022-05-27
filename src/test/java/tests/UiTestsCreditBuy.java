@@ -1,5 +1,6 @@
 package tests;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +21,7 @@ public class UiTestsCreditBuy {
 
     @BeforeAll
     public static void startUp() {
+        WebDriverManager.chromedriver().driverVersion("85").setup();
         open("http://localhost:8080");
         var index = new IndexPage();
         uiCredit = index.letMeBuyViaCredit();
