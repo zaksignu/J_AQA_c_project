@@ -1,15 +1,13 @@
 package tests;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import pages.IndexPage;
 import pages.StraightBuy;
 import web.DataWizard;
 import web.FellowOneEntity;
 import web.Patterns;
 
+import static com.codeborne.selenide.Selenide.closeWindow;
 import static com.codeborne.selenide.Selenide.open;
 
 public class DbTestsStraightBuy {
@@ -23,7 +21,10 @@ public class DbTestsStraightBuy {
         dbStraight = index.letMeBuyStraight();
         Patterns.fillItCorrect(ghost, dbStraight);
     }
-
+    @AfterAll
+    public static void killIt(){
+        closeWindow();
+    }
     @Test
     @DisplayName("DB straight test:Happy path with APPROVED card and DB inspection")
     public void happyPathWithApprovedCard() {

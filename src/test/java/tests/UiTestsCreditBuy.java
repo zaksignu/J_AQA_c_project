@@ -1,5 +1,6 @@
 package tests;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,7 @@ import web.DataWizard;
 import web.FellowOneEntity;
 import web.Patterns;
 
+import static com.codeborne.selenide.Selenide.closeWindow;
 import static com.codeborne.selenide.Selenide.open;
 
 public class UiTestsCreditBuy {
@@ -22,6 +24,10 @@ public class UiTestsCreditBuy {
         var index = new IndexPage();
         uiCredit = index.letMeBuyViaCredit();
         Patterns.fillItCorrect(ghost, uiCredit);
+    }
+    @AfterAll
+    public static void killIt(){
+        closeWindow();
     }
 
     @Test
