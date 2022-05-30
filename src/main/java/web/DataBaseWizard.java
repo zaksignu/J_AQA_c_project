@@ -66,7 +66,6 @@ public class DataBaseWizard {
                 );
                 var paymentStatus = conn.createStatement();
         ) {
-            String p = " SELECT  status from " + dbPage + "  where created like '" + date + "%' and status like '" + status + "' order by created desc;";
             try (var rs = paymentStatus.executeQuery(" SELECT  status from " + dbPage + " where created like '" + date + "%' and status like '" + status + "' order by created desc;")) {
                 if (rs.next()) {
                     return rs.getString(1);
