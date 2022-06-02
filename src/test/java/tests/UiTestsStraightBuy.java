@@ -1,5 +1,8 @@
 package tests;
 
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,11 +20,19 @@ public class UiTestsStraightBuy {
 
     @BeforeAll
     public static void startUp() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
         open("http://localhost:8080");
         var index = new IndexPage();
         uiStraight = index.letMeBuyStraight();
         Patterns.fillItCorrect(ghost, uiStraight);
     }
+
+    @AfterAll
+    public static void tearDown() {
+        SelenideLogger.removeListener("allure");
+    }
+
+
 
     @Test
     @DisplayName("UI straight test:Non complete card number")

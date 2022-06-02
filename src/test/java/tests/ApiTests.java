@@ -1,8 +1,8 @@
 package tests;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.*;
 import web.DataWizard;
 import web.FellowOneEntity;
 import web.Patterns;
@@ -11,6 +11,16 @@ import web.Patterns;
 public class ApiTests {
     static FellowOneEntity.FellowOne ghost = DataWizard.UserManipulating.generateUser();
     static FellowOneEntity.ApiPaths aPath = new FellowOneEntity.ApiPaths();
+
+    @BeforeAll
+    public static void setUp() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
+    }
+
+    @AfterAll
+    public static void tearDown() {
+        SelenideLogger.removeListener("allure");
+    }
 
     @Test
     @DisplayName("Response with approved card for straight payment ")

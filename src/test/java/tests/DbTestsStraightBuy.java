@@ -1,9 +1,8 @@
 package tests;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.*;
 import pages.IndexPage;
 import pages.StraightBuy;
 import web.DataWizard;
@@ -18,11 +17,19 @@ public class DbTestsStraightBuy {
 
     @BeforeAll
     public static void startUp() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
         open("http://localhost:8080");
         var index = new IndexPage();
         dbStraight = index.letMeBuyStraight();
         Patterns.fillItCorrect(ghost, dbStraight);
     }
+
+
+    @AfterAll
+    public static void tearDown() {
+        SelenideLogger.removeListener("allure");
+    }
+
 
     @Test
     @DisplayName("DB straight test:Happy path with APPROVED card and DB inspection")

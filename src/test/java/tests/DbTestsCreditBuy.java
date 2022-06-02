@@ -1,9 +1,8 @@
 package tests;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.*;
 import pages.CreditBuy;
 import pages.IndexPage;
 import web.DataWizard;
@@ -18,26 +17,35 @@ public class DbTestsCreditBuy {
 
     @BeforeAll
     public static void startUp() {
+
+        SelenideLogger.addListener("allure", new AllureSelenide());
+
         open("http://localhost:8080");
         var index = new IndexPage();
         dbCredit = index.letMeBuyViaCredit();
         Patterns.fillItCorrect(ghost, dbCredit);
     }
 
+    @AfterAll
+    public static void tearDown() {
+        SelenideLogger.removeListener("allure");
+    }
+
+
     @Test
     @DisplayName("DB credit test:Happy path with APPROVED card and DB inspection")
-    public void happyPathWithApprovedCard(){
+    public void happyPathWithApprovedCard() {
         String actual = dbCredit.happyPathWithApprovedCardAndDbCredit(ghost);
         String expected = "APPROVED";
-        Assertions.assertEquals(expected,actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
     @DisplayName("DB credit test:Happy path with DECLINED card and DB inspection")
-    public void happyPathWithDeclined(){
+    public void happyPathWithDeclined() {
         String actual = dbCredit.happyPathWithDeclinedCardAndDbCredit(ghost);
         String expected = "DECLINED";
-        Assertions.assertEquals(expected,actual);
+        Assertions.assertEquals(expected, actual);
     }
 
 
