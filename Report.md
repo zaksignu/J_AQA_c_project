@@ -5,4 +5,5 @@
 - 5 тестов на взаимодействие с базой данных. Из них все прошли
 - 6 тестов на API, из них все прошли
 
-Штатными средствами Gradle сформированы отчеты по прохождениям тестов [тут](https://github.com/zaksignu/J_AQA_c_project/blob/master/test/index.html).
+Отчет о прохождении тестов сформирован с помощью Allure
+![Screenshot_j_AQA_C](https://user-images.githubusercontent.com/55884879/171596976-1f5375a3-a56e-496c-9abc-ca5bd7021ddf.png)
