@@ -12,15 +12,10 @@ compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
 
 allure {
-        //configuration = "testImplementation"
 
-   // version.set("2.17.1")
     autoconfigure = true
-//    version = '2.14.0' // Latest Allure Version
     version = '2.14.0' // Latest Allure Version
-//    useJUnit5 {
-//        version = '2.17.3' // Latest Allure Version
-//    }
+
 }
 repositories {
 
@@ -42,9 +37,6 @@ dependencies {
     implementation 'com.codeborne:selenide:6.3.5'
     testImplementation 'mysql:mysql-connector-java:8.0.22'
     testImplementation 'commons-dbutils:commons-dbutils:1.7'
-
-//    testImplementation 'io.qameta.allure:allure-junit5-assert:2.17.3'
-//    testImplementation 'io.qameta.allure:allure-junit5:2.17.3'
     testImplementation 'io.qameta.allure:allure-selenide:2.14.0'
 
 }
